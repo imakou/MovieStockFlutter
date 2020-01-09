@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/cast.dart';
 import 'package:flutter_app/model/movie.dart';
+import 'package:flutter_app/widgets/CastsPageView.dart';
 import 'package:intl/intl.dart';
 
 class MovieDetailScreen extends StatefulWidget {
@@ -39,7 +40,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
           body: Container(
               width: double.infinity,
               height: MediaQuery.of(context).size.height,
-              color: Colors.black12,
+              color: Colors.white,
               child: Stack(
                 alignment: Alignment.topCenter,
                 children: <Widget>[
@@ -64,7 +65,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(30.0),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(35.0),
+                                topRight: Radius.circular(35.0)),
                           ),
                           child: Padding(
                             padding: EdgeInsets.all(10.0),
@@ -176,75 +179,66 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                           ),
                                         ],
                                       ),
+                                      CastsPageView(casts: _movie.casts),
                                     ],
                                   ),
-                                  InkWell(
-                                    child: Container(child: Text(_movie.title)),
-                                    onTap: () {
-                                      print(_movie.casts[0].name);
-                                    },
-                                  ),
-                                  Container(
-                                    height: 130.0,
-                                    child: FutureBuilder(
-                                        future: fetchCasts(_movie.id),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.done) {
-                                            final List<Cast> _cast =
-                                                snapshot.data;
-                                            return ListView.builder(
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: snapshot.data.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                Cast cast = _cast[index];
-                                                return cast.profilePath != null
-                                                    ? GestureDetector(
-                                                        child: Container(
-                                                            child: Stack(
-                                                          children: <Widget>[
-                                                            Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(10),
-                                                              child: Column(
-                                                                children: <
-                                                                    Widget>[
-                                                                  CircleAvatar(
-                                                                    backgroundImage:
-                                                                        NetworkImage(
-                                                                      'https://image.tmdb.org/t/p/w276_and_h350_face/${cast.profilePath}',
-                                                                    ),
-                                                                    minRadius:
-                                                                        40,
-                                                                    maxRadius:
-                                                                        40,
-                                                                  ),
-                                                                  SizedBox(
-                                                                      height:
-                                                                          5),
-                                                                  Text(
-                                                                    cast.name,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        )),
-                                                      )
-                                                    : null;
-                                              },
-                                            );
-                                          } else {
-                                            return CircularProgressIndicator();
-                                          }
-                                        }),
-                                  )
+                                  // InkWell(
+                                  //   child: Container(child: Text(_movie.title)),
+                                  //   onTap: () {
+                                  //     print(_movie.casts[0].name);
+                                  //   },
+                                  // ),
+                                  // Container(
+                                  //   height: 100.0,
+                                  //   child: FutureBuilder(
+                                  //       future: fetchCasts(_movie.id),
+                                  //       builder: (context, snapshot) {
+                                  //         if (snapshot.connectionState ==
+                                  //             ConnectionState.done) {
+                                  //           final List<Cast> _cast =
+                                  //               snapshot.data;
+                                  //           return ListView.builder(
+                                  //             scrollDirection: Axis.horizontal,
+                                  //             itemCount: snapshot.data.length,
+                                  //             controller: PageController(
+                                  //               initialPage: 0,
+                                  //               viewportFraction: 0.5,
+                                  //             ),
+                                  //             physics: PageScrollPhysics(),
+                                  //             itemBuilder:
+                                  //                 (BuildContext context,
+                                  //                     int index) {
+                                  //               Cast cast = _cast[index];
+                                  //               return cast.profilePath != null
+                                  //                   ? GestureDetector(
+                                  //                       child: Container(
+                                  //                           child: Column(
+                                  //                         children: <Widget>[
+                                  //                           CircleAvatar(
+                                  //                             backgroundImage:
+                                  //                                 NetworkImage(
+                                  //                               'https://image.tmdb.org/t/p/w276_and_h350_face/${cast.profilePath}',
+                                  //                             ),
+                                  //                             minRadius: 40,
+                                  //                             maxRadius: 40,
+                                  //                           ),
+                                  //                           SizedBox(height: 5),
+                                  //                           // Text(
+                                  //                           //   cast.name,
+                                  //                           //   overflow:
+                                  //                           //       TextOverflow.ellipsis,
+                                  //                           // )
+                                  //                         ],
+                                  //                       )),
+                                  //                     )
+                                  //                   : null;
+                                  //             },
+                                  //           );
+                                  //         } else {
+                                  //           return CircularProgressIndicator();
+                                  //         }
+                                  //       }),
+                                  // ),
                                 ],
                               ),
                             ),

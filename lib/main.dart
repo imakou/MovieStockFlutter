@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Startup Name Generator',
       home: RestListDemo(),
     );
@@ -62,9 +63,9 @@ class _RestListDemoState extends State<RestListDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Contacts'),
-        ),
-        body: MoviesCarousel(_movies));
+        body: SafeArea(
+      minimum: const EdgeInsets.all(10.0),
+      child: MoviesCarousel(_movies),
+    ));
   }
 }

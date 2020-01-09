@@ -1,150 +1,126 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/movie.dart';
 import 'package:flutter_app/screens/movie_detail_screen.dart';
+import 'dart:math';
 
-class MoviesCarousel extends StatelessWidget {
+const SCALE_FRACTION = 0.7;
+const FULL_SCALE = 1.0;
+const PAGER_HEIGHT = 200.0;
+
+class MoviesCarousel extends StatefulWidget {
   final List<Movie> _movies;
-  const MoviesCarousel(this._movies, {Key key}) : super(key: key);
+  const MoviesCarousel(this._movies);
+
+  @override
+  _MoviesCarouselState createState() => _MoviesCarouselState();
+}
+
+class _MoviesCarouselState extends State<MoviesCarousel> {
+  double viewPortFraction = 0.8;
+  double page = 2.0;
+  int currentPage = 0;
+  PageController pageController;
+
+  @override
+  void initState() {
+    pageController = PageController(
+        initialPage: currentPage, viewportFraction: viewPortFraction);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width);
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
-          width: double.infinity,
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: 15.0,
-              left: 10.0,
-            ),
-            child: Text(
-              'What are the popular movies?',
-              style: TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+        Text(
+          'Now Playing Movies',
+          style: TextStyle(
+            fontSize: 22.0,
+            fontWeight: FontWeight.bold,
           ),
         ),
         Container(
-          height: 300,
-          child: ListView.builder(
+          height: 470,
+          child: ListView(
             scrollDirection: Axis.horizontal,
-            itemCount: _movies.length,
-            itemBuilder: (BuildContext context, int index) {
-              Movie movie = _movies[index];
-              return GestureDetector(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => MovieDetailScreen(movieID: movie.id))),
-                child: Container(
-                    child: Stack(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black26,
-                              offset: Offset(0.0, 2.0),
-                              blurRadius: 6.0,
-                            ),
-                          ],
-                        ),
-                        child: Stack(
-                          children: <Widget>[
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: Image(
-                                height: 180.0,
-                                width: 180.0,
-                                image: NetworkImage(
-                                    'https://image.tmdb.org/t/p/w500_and_h282_face/${movie.posterPath}'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Positioned(
-                              left: 0.0,
-                              bottom: 0.0,
-                              child: Container(
-                                height: 45,
-                                width: 180,
-                                decoration: BoxDecoration(
-                                  color: Colors.black54,
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(20.0),
-                                    bottomRight: Radius.circular(20.0),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 10.0,
-                              bottom: 10.0,
-                              child: Container(
-                                width: 180,
-                                child: Text(
-                                  movie.title,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 1.2,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // Positioned(
-                            //   left: 10.0,
-                            //   bottom: 10.0,
-                            //   child: Container(
-                            //     decoration: BoxDecoration(
-                            //       color: Colors.black54,
-                            //       borderRadius: BorderRadius.circular(20.0),
-                            //     ),
-                            //     child: Column(
-                            //       crossAxisAlignment: CrossAxisAlignment.start,
-                            //       children: <Widget>[
-                            //         Text(
-                            //           movie.title,
-                            //           style: TextStyle(
-                            //             color: Colors.white,
-                            //             fontSize: 18.0,
-                            //             fontWeight: FontWeight.w600,
-                            //             letterSpacing: 1.2,
-                            //           ),
-                            //         ),
-                            //         Row(
-                            //           children: <Widget>[
-                            //             SizedBox(width: 5.0),
-                            //             Text(
-                            //               movie.popularity.toString(),
-                            //               style: TextStyle(
-                            //                 color: Colors.white,
-                            //               ),
-                            //             ),
-                            //           ],
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
-              );
-            },
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width - 20,
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification notification) {
+                    if (notification is ScrollUpdateNotification) {
+                      setState(() {
+                        page = pageController.page;
+                      });
+                    }
+                  },
+                  child: new PageView.builder(
+                    onPageChanged: (pos) {
+                      setState(() {
+                        currentPage = pos;
+                      });
+                    },
+                    physics: BouncingScrollPhysics(),
+                    controller: pageController,
+                    itemCount: widget._movies.length,
+                    itemBuilder: (context, index) {
+                      Movie movie = widget._movies[index];
+                      final scale = max(
+                          SCALE_FRACTION,
+                          (FULL_SCALE - (index - page).abs()) +
+                              viewPortFraction);
+                      return posterOffer(movie, scale);
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],
     );
+  }
+
+  Widget posterOffer(Movie movie, double scale) {
+    return GestureDetector(
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => MovieDetailScreen(movieID: movie.id))),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Container(
+              child: Image(
+            image: NetworkImage(
+                'https://image.tmdb.org/t/p/w300_and_h450_bestv2/${movie.posterPath}'),
+            fit: BoxFit.cover,
+          )
+              // child: Container(
+              //   decoration: BoxDecoration(
+              //     color: Colors.white,
+              //     borderRadius: BorderRadius.circular(20.0),
+              //     boxShadow: [
+              //       BoxShadow(
+              //         color: Colors.black26,
+              //         offset: Offset(0.0, 2.0),
+              //         blurRadius: 6.0,
+              //       ),
+              //     ],
+              //   ),
+              //   child: ClipRRect(
+              //     borderRadius: BorderRadius.circular(20.0),
+              //     child: Image(
+              //       width: MediaQuery.of(context).size.width - 20,
+              //       image: NetworkImage(
+              //           'https://image.tmdb.org/t/p/w300_and_h450_bestv2/${movie.posterPath}'),
+              //       fit: BoxFit.cover,
+              //     ),
+              //   ),
+              // ),
+              ),
+        ));
   }
 }
