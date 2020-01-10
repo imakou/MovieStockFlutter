@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter_app/model/movie.dart';
 import 'package:flutter_app/widgets/MoviesCarousel.dart';
+import 'package:flutter_app/widgets/PopularMoviesCarousel.dart';
 
 void main() => runApp(MyApp());
 
@@ -63,9 +64,18 @@ class _RestListDemoState extends State<RestListDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      minimum: const EdgeInsets.all(10.0),
-      child: MoviesCarousel(_movies),
+        body: Container(
+      color: Colors.grey[800],
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              MoviesCarousel(_movies),
+              PopularMoviesCarousel(_movies),
+            ],
+          ),
+        ),
+      ),
     ));
   }
 }

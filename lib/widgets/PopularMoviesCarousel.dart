@@ -6,17 +6,17 @@ import 'dart:math';
 const SCALE_FRACTION = 0.7;
 const FULL_SCALE = 1.0;
 
-class MoviesCarousel extends StatefulWidget {
+class PopularMoviesCarousel extends StatefulWidget {
   final List<Movie> _movies;
-  const MoviesCarousel(this._movies);
+  const PopularMoviesCarousel(this._movies);
 
   @override
-  _MoviesCarouselState createState() => _MoviesCarouselState();
+  _PopularMoviesCarouselState createState() => _PopularMoviesCarouselState();
 }
 
-class _MoviesCarouselState extends State<MoviesCarousel> {
+class _PopularMoviesCarouselState extends State<PopularMoviesCarousel> {
   double viewPortFraction = 0.8;
-  double page = 0.0;
+  double page = 2.0;
   int currentPage = 0;
   PageController pageController;
 
@@ -32,16 +32,16 @@ class _MoviesCarouselState extends State<MoviesCarousel> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        SizedBox(
+          height: 5,
+        ),
         Text(
-          'Now Playing Movies',
+          'Popular Movies',
           style: TextStyle(
               fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        SizedBox(
-          height: 15,
-        ),
         Container(
-          height: 470,
+          height: 355,
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: <Widget>[
@@ -91,16 +91,61 @@ class _MoviesCarouselState extends State<MoviesCarousel> {
         child: Padding(
           padding: const EdgeInsets.all(5),
           child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-                height: 532 * scale,
-                child: Card(
-                  child: Image(
-                    image: NetworkImage(
-                        'https://image.tmdb.org/t/p/w780/${movie.posterPath}'),
-                    fit: BoxFit.cover,
+            alignment: Alignment.topCenter,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    color: Colors.white,
+                    width: 355,
+                    height: 150,
+                    child: Card(
+                      child: Image(
+                        image: NetworkImage(
+                            'https://image.tmdb.org/t/p/w500_and_h282_face/${movie.posterPath}'),
+                        fit: BoxFit.cover,
+                      ),
+                    )),
+                Container(
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            movie.title,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 28,
+                          width: 28,
+                          decoration: BoxDecoration(
+                            color: Colors.yellow,
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          child: Center(
+                              child: Text(
+                            movie.voteAverage.toString(),
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                        ),
+                      ],
+                    ),
                   ),
-                )),
+                )
+              ],
+            ),
           ),
         ));
   }
