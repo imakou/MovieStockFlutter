@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 import 'package:flutter_app/model/movie.dart';
 import 'package:flutter_app/widgets/MoviesCarousel.dart';
 import 'package:flutter_app/widgets/PopularMoviesCarousel.dart';
@@ -32,7 +31,8 @@ class RestListDemo extends StatefulWidget {
 }
 
 class _RestListDemoState extends State<RestListDemo> {
-  List<Movie> _movies = List<Movie>();
+  List<Movie> _nowPlayingMovies = List<Movie>();
+  List<Movie> _popularMovies = List<Movie>();
 
   @override
   void initState() {
@@ -42,40 +42,28 @@ class _RestListDemoState extends State<RestListDemo> {
 
   void _saveMoviesInState() {
     // Save Movies in state
-    fetchMovies().then((movies) => {
-          setState(() => {_movies = movies})
+    fetchMovies("now_playing").then((movies) => {
+          setState(() => {_nowPlayingMovies = movies..shuffle()})
         });
-  }
-
-  ListTile _buildItemsForListView(BuildContext context, int index) {
-    return ListTile(
-      title: Text(_movies[index].title,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontFamily: 'OpenSans',
-          )),
-      subtitle:
-          Text(_movies[index].backdropPath, style: TextStyle(fontSize: 12)),
-    );
+    fetchMovies("popular").then((movies) => {
+          setState(() => {_popularMovies = movies..shuffle()})
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomPadding: false,
         body: Container(
-      color: Colors.grey[800],
-      child: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              MoviesCarousel(_movies),
-              PopularMoviesCarousel(_movies),
-            ],
+          color: Colors.grey[800],
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                MoviesCarousel(_nowPlayingMovies),
+                PopularMoviesCarousel(_popularMovies),
+              ],
+            ),
           ),
-        ),
-      ),
-    ));
+        ));
   }
 }

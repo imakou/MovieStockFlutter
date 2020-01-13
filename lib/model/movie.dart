@@ -69,9 +69,9 @@ class Movie {
           : []);
 }
 
-Future<List<Movie>> fetchMovies() async {
+Future<List<Movie>> fetchMovies(String moviesType) async {
   final response = await http.get(
-      'https://api.themoviedb.org/3/movie/popular?api_key=62a63e99e24cf6c6b6793a961f73e879&language=en-US&include_image_language=en');
+      'https://api.themoviedb.org/3/movie/${moviesType}?api_key=62a63e99e24cf6c6b6793a961f73e879&language=en-US&include_image_language=en');
   if (response.statusCode == 200) {
     // If server returns an OK response, parse the JSON.
     final result = json.decode(response.body);
