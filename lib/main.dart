@@ -33,6 +33,8 @@ class RestListDemo extends StatefulWidget {
 class _RestListDemoState extends State<RestListDemo> {
   List<Movie> _nowPlayingMovies = List<Movie>();
   List<Movie> _popularMovies = List<Movie>();
+  final _bottomNavigationColor = Colors.white;
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -64,6 +66,52 @@ class _RestListDemoState extends State<RestListDemo> {
               ],
             ),
           ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          backgroundColor: Colors.grey[700],
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.movie,
+                  color: _bottomNavigationColor,
+                ),
+                title: Text(
+                  '',
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.subject,
+                  color: _bottomNavigationColor,
+                ),
+                title: Text(
+                  '',
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.search,
+                  color: _bottomNavigationColor,
+                ),
+                title: Text(
+                  '',
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.account_box,
+                  color: _bottomNavigationColor,
+                ),
+                title: Text(
+                  '',
+                )),
+          ],
+          currentIndex: _currentIndex,
+          onTap: (int index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
         ));
   }
 }

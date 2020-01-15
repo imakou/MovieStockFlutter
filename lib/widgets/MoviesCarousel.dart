@@ -76,8 +76,6 @@ class _MoviesCarouselState extends State<MoviesCarousel> {
           children: <Widget>[
             ShaderMask(
               shaderCallback: (rect) {
-                print(rect.width);
-                print(rect.height);
                 return LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,

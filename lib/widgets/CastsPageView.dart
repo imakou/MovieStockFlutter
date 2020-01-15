@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/cast.dart';
 import 'dart:math';
+
+import 'package:flutter_app/screens/cast_detail_screen.dart';
 
 const PAGER_HEIGHT = 145.0;
 
@@ -19,27 +22,32 @@ class _CastsPageViewState extends State<CastsPageView> {
   List<Widget> ccasts = [];
   composeCasts() {
     List<Widget> _rowChildren = [];
-    widget.casts.asMap().forEach((index, value) {
-      print('index:$index');
+    widget.casts.asMap().forEach((index, cast) {
       _rowChildren.add(
-        Card(
-          elevation: 5,
-          clipBehavior: Clip.antiAlias,
-          shape: CircleBorder(
-              side: BorderSide(color: Colors.grey.shade200, width: 5)),
-          child: value.profilePath != null
-              ? Image(
-                  width: 120.0,
-                  image: NetworkImage(
-                      'https://image.tmdb.org/t/p/w276_and_h350_face/${value.profilePath}'),
-                  fit: BoxFit.cover,
-                )
-              : Image(
-                  width: 120.0,
-                  image: NetworkImage(
-                      'https://i.picsum.photos/id/327/200/300.jpg'),
-                  fit: BoxFit.cover,
-                ),
+        GestureDetector(
+          onTap: () => Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  builder: (_) => CastDetail(personID: cast.id))),
+          child: Card(
+            elevation: 5,
+            clipBehavior: Clip.antiAlias,
+            shape: CircleBorder(
+                side: BorderSide(color: Colors.grey.shade200, width: 5)),
+            child: cast.profilePath != null
+                ? Image(
+                    width: 120.0,
+                    image: NetworkImage(
+                        'https://image.tmdb.org/t/p/w276_and_h350_face/${cast.profilePath}'),
+                    fit: BoxFit.cover,
+                  )
+                : Image(
+                    width: 120.0,
+                    image: NetworkImage(
+                        'https://i.picsum.photos/id/327/200/300.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+          ),
         ),
       );
 
@@ -105,41 +113,6 @@ class _CastsPageViewState extends State<CastsPageView> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget circleOffer(String image) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Card(
-                    elevation: 5,
-                    clipBehavior: Clip.antiAlias,
-                    shape: CircleBorder(
-                        side:
-                            BorderSide(color: Colors.grey.shade200, width: 5)),
-                    child: Image(
-                      width: 90.0,
-                      image: NetworkImage(
-                          'https://image.tmdb.org/t/p/w276_and_h350_face/${image}'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Text(
-                    widget.casts[currentPage].name,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
-            ],
-          )),
     );
   }
 }

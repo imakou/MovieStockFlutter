@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/cast.dart';
 import 'package:flutter_app/model/movie.dart';
 import 'package:flutter_app/widgets/CastsPageView.dart';
 import 'package:intl/intl.dart';
+
+import 'cast_list_screen.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   final int movieID;
@@ -53,6 +56,30 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           fit: BoxFit.cover,
                           colorFilter: ColorFilter.mode(
                               Colors.black.withOpacity(0.2), BlendMode.darken)),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 35.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.black26,
+                            borderRadius: BorderRadius.circular(40.0),
+                          ),
+                          child: Center(
+                            child: IconButton(
+                              icon: Icon(Icons.arrow_back),
+                              color: Colors.white,
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Positioned(
@@ -168,12 +195,21 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                           Padding(
                                             padding:
                                                 EdgeInsets.only(right: 10.0),
-                                            child: Text(
-                                              "See All",
-                                              style: TextStyle(
-                                                fontSize: 12.0,
-                                                letterSpacing: 1.3,
-                                                height: 1.5,
+                                            child: GestureDetector(
+                                              onTap: () => Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (_) =>
+                                                          CastScreen(
+                                                              casts: _movie
+                                                                  .casts))),
+                                              child: Text(
+                                                "See All",
+                                                style: TextStyle(
+                                                  fontSize: 12.0,
+                                                  letterSpacing: 1.3,
+                                                  height: 1.5,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -182,63 +218,6 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                       CastsPageView(casts: _movie.casts),
                                     ],
                                   ),
-                                  // InkWell(
-                                  //   child: Container(child: Text(_movie.title)),
-                                  //   onTap: () {
-                                  //     print(_movie.casts[0].name);
-                                  //   },
-                                  // ),
-                                  // Container(
-                                  //   height: 100.0,
-                                  //   child: FutureBuilder(
-                                  //       future: fetchCasts(_movie.id),
-                                  //       builder: (context, snapshot) {
-                                  //         if (snapshot.connectionState ==
-                                  //             ConnectionState.done) {
-                                  //           final List<Cast> _cast =
-                                  //               snapshot.data;
-                                  //           return ListView.builder(
-                                  //             scrollDirection: Axis.horizontal,
-                                  //             itemCount: snapshot.data.length,
-                                  //             controller: PageController(
-                                  //               initialPage: 0,
-                                  //               viewportFraction: 0.5,
-                                  //             ),
-                                  //             physics: PageScrollPhysics(),
-                                  //             itemBuilder:
-                                  //                 (BuildContext context,
-                                  //                     int index) {
-                                  //               Cast cast = _cast[index];
-                                  //               return cast.profilePath != null
-                                  //                   ? GestureDetector(
-                                  //                       child: Container(
-                                  //                           child: Column(
-                                  //                         children: <Widget>[
-                                  //                           CircleAvatar(
-                                  //                             backgroundImage:
-                                  //                                 NetworkImage(
-                                  //                               'https://image.tmdb.org/t/p/w276_and_h350_face/${cast.profilePath}',
-                                  //                             ),
-                                  //                             minRadius: 40,
-                                  //                             maxRadius: 40,
-                                  //                           ),
-                                  //                           SizedBox(height: 5),
-                                  //                           // Text(
-                                  //                           //   cast.name,
-                                  //                           //   overflow:
-                                  //                           //       TextOverflow.ellipsis,
-                                  //                           // )
-                                  //                         ],
-                                  //                       )),
-                                  //                     )
-                                  //                   : null;
-                                  //             },
-                                  //           );
-                                  //         } else {
-                                  //           return CircularProgressIndicator();
-                                  //         }
-                                  //       }),
-                                  // ),
                                 ],
                               ),
                             ),
@@ -248,11 +227,11 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           top: -25,
                           right: 25,
                           child: Container(
-                            height: 50,
-                            width: 50,
+                            height: 55,
+                            width: 55,
                             decoration: BoxDecoration(
                               color: Colors.yellow,
-                              borderRadius: BorderRadius.circular(50.0),
+                              borderRadius: BorderRadius.circular(55.0),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black26,
@@ -261,10 +240,26 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                 ),
                               ],
                             ),
-                            child: Center(
-                                child: Text(
-                              _movie.voteAverage.toString(),
-                              style: TextStyle(fontSize: 20),
+                            child: Container(
+                                child: Stack(
+                              overflow: Overflow.visible,
+                              children: <Widget>[
+                                Positioned(
+                                    top: 13,
+                                    left: 5,
+                                    child: Text(
+                                      _movie.voteAverage.toString(),
+                                      style: TextStyle(fontSize: 20),
+                                    )),
+                                Positioned(
+                                  top: 23,
+                                  right: 1,
+                                  child: Text(
+                                    "/10",
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                )
+                              ],
                             )),
                           ),
                         ),

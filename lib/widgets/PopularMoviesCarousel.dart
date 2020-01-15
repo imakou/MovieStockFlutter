@@ -92,32 +92,52 @@ class _PopularMoviesCarouselState extends State<PopularMoviesCarousel> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                    color: Colors.grey[600],
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Image(
-                            image: NetworkImage(
-                                'https://image.tmdb.org/t/p/w500_and_h282_face/${movie.posterPath}'),
-                            fit: BoxFit.cover,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[600],
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          height: 150,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  'https://image.tmdb.org/t/p/w500_and_h282_face/${movie.posterPath}'),
+                              fit: BoxFit.cover,
+                              colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(0),
+                                  BlendMode.darken),
+                            ),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15.0),
+                                topRight: Radius.circular(15.0)),
                           ),
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "${movie.title} (${DateFormat('yyyy').format(movie.releaseDate)})",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey[300]),
-                                  ),
-                                  SmoothStarRating(
+                        ),
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  movie.title,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[300]),
+                                ),
+                                Text(
+                                  "${DateFormat('yyyy').format(movie.releaseDate)}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 14.0, color: Colors.grey[300]),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 8.0),
+                                  child: SmoothStarRating(
                                       allowHalfRating: false,
                                       starCount: 5,
                                       rating: movie.voteAverage / 2,
@@ -127,12 +147,12 @@ class _PopularMoviesCarouselState extends State<PopularMoviesCarousel> {
                                       color: Colors.yellow,
                                       borderColor: Colors.yellow,
                                       spacing: 0.0),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        )
+                      ],
                     )),
               ],
             ),
