@@ -32,37 +32,51 @@ class _MoviesCarouselState extends State<MoviesCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          height: 430,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: new PageView.builder(
-                  onPageChanged: (pos) {
-                    setState(() {
-                      currentPage = pos;
-                    });
-                  },
-                  physics: BouncingScrollPhysics(),
-                  controller: pageController,
-                  itemCount: widget._movies.length,
-                  itemBuilder: (context, index) {
-                    Movie movie = widget._movies[index];
-                    final scale = max(SCALE_FRACTION,
-                        (FULL_SCALE - (index - page).abs()) + viewPortFraction);
-                    return posterOffer(movie, scale);
-                  },
-                ),
-              ),
-            ],
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Now Playing',
+              style: TextStyle(
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
           ),
-        ),
-      ],
+          Container(
+            height: 430,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: new PageView.builder(
+                    onPageChanged: (pos) {
+                      setState(() {
+                        currentPage = pos;
+                      });
+                    },
+                    physics: BouncingScrollPhysics(),
+                    controller: pageController,
+                    itemCount: widget._movies.length,
+                    itemBuilder: (context, index) {
+                      Movie movie = widget._movies[index];
+                      final scale = max(
+                          SCALE_FRACTION,
+                          (FULL_SCALE - (index - page).abs()) +
+                              viewPortFraction);
+                      return posterOffer(movie, scale);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

@@ -31,7 +31,9 @@ class Person {
   });
 
   factory Person.fromJson(Map<String, dynamic> json) => Person(
-        birthday: DateTime.parse(json["birthday"]),
+        birthday: json["birthday"] != null
+            ? DateTime.parse(json["birthday"])
+            : DateTime.parse('0000-00-00'),
         knownForDepartment: json["known_for_department"],
         id: json["id"],
         name: json["name"],
@@ -83,7 +85,7 @@ class PersonPoster {
 
 Future<List<PersonPoster>> fetchPersonPoster(int personID) async {
   final response = await http.get(
-      'https://api.themoviedb.org/3/person/${personID}/tagged_images?api_key=62a63e99e24cf6c6b6793a961f73e879&language=en-US&include_image_language=en');
+      'https://api.themoviedb.org/3/person/${personID}/tagged_images?api_key=62a63e99e24cf6c6b6793a961f73e879&language=en-US&page=1');
   if (response.statusCode == 200) {
     // If server returns an OK response, parse the JSON.
     final result = json.decode(response.body);
@@ -97,36 +99,28 @@ Future<List<PersonPoster>> fetchPersonPoster(int personID) async {
 }
 
 class Media {
-  bool adult;
   String backdropPath;
-  List<int> genreIds;
-  String id;
-  int mediaId;
-  String originalLanguage;
-  String originalTitle;
+  int id;
   String overview;
-  DateTime releaseDate;
   String posterPath;
-  double popularity;
   String title;
-  bool video;
   double voteAverage;
-  int voteCount;
 
   Media({
     this.backdropPath,
     this.id,
     this.overview,
-    this.releaseDate,
     this.posterPath,
     this.title,
+    this.voteAverage,
   });
 
   factory Media.fromJson(Map<String, dynamic> json) => Media(
         backdropPath: json["backdrop_path"],
-        id: json["_id"],
+        id: json["id"],
         overview: json["overview"],
         posterPath: json["poster_path"],
-        title: json["title"],
+        title: json["original_title"],
+        voteAverage: json["vote_average"].toDouble(),
       );
 }

@@ -17,16 +17,18 @@ class MovieDetailScreen extends StatefulWidget {
 
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
   Movie _movie;
+  String _errorMessage;
   @override
   void initState() {
     // TODO: implement initState
-    fetchMovie(widget.movieID).then((movie) => {
-          print(movie.genreIds),
-          print("movie.cast:${movie.casts[0].name}"),
-          setState(() {
-            _movie = movie;
-          })
-        });
+    fetchMovie(widget.movieID).then((movie) {
+      setState(() {
+        _movie = movie;
+      });
+    }).catchError((e) {
+      print('catchError $e');
+      setState(() => {_errorMessage = e.toString()});
+    });
   }
 
   String durationToString(int minutes) {
@@ -47,17 +49,20 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               child: Stack(
                 alignment: Alignment.topCenter,
                 children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: NetworkImage(
-                              'https://image.tmdb.org/t/p/w1280/${_movie.backdropPath}'),
-                          fit: BoxFit.cover,
-                          colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.2), BlendMode.darken)),
-                    ),
-                  ),
+                  _movie.backdropPath != null
+                      ? Container(
+                          height: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    'https://image.tmdb.org/t/p/w1280/${_movie.backdropPath}'),
+                                fit: BoxFit.cover,
+                                colorFilter: ColorFilter.mode(
+                                    Colors.black.withOpacity(0.2),
+                                    BlendMode.darken)),
+                          ),
+                        )
+                      : Text("N/a"),
                   Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: 10.0, vertical: 35.0),
@@ -227,11 +232,11 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           top: -25,
                           right: 25,
                           child: Container(
-                            height: 55,
-                            width: 55,
+                            height: 58,
+                            width: 58,
                             decoration: BoxDecoration(
                               color: Colors.yellow,
-                              borderRadius: BorderRadius.circular(55.0),
+                              borderRadius: BorderRadius.circular(58.0),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black26,
@@ -245,8 +250,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                               overflow: Overflow.visible,
                               children: <Widget>[
                                 Positioned(
-                                    top: 13,
-                                    left: 5,
+                                    top: 15,
+                                    left: 3,
                                     child: Text(
                                       _movie.voteAverage.toString(),
                                       style: TextStyle(fontSize: 20),
@@ -268,7 +273,13 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                   ),
                 ],
               )));
+    } else if (_errorMessage != null) {
+      return Center(
+        child: Text(_errorMessage),
+      );
     } else {
+      print('_errorMessage $_errorMessage');
+
       return Center(
         child: CircularProgressIndicator(),
       );

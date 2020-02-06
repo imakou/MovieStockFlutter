@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/cast.dart';
-
 import 'cast_detail_screen.dart';
 
 class CastScreen extends StatefulWidget {
@@ -25,15 +24,11 @@ class _CastScreenState extends State<CastScreen> {
           style: TextStyle(fontSize: 18, color: Colors.grey[700]),
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            color: Colors.white,
-            child: Wrap(
-              children: <Widget>[
-                ...widget.casts.map((cast) => castOffer(cast)).toList()
-              ],
-            ),
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          child: Wrap(
+            children: widget.casts.map((cast) => castOffer(cast)).toList(),
           ),
         ),
       ),
@@ -41,7 +36,6 @@ class _CastScreenState extends State<CastScreen> {
   }
 
   Widget castOffer(Cast cast) {
-    print(cast.character);
     return Container(
       width: MediaQuery.of(context).size.width / 2,
       child: GestureDetector(

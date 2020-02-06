@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/cast.dart';
-import 'dart:math';
-
 import 'package:flutter_app/screens/cast_detail_screen.dart';
 
 const PAGER_HEIGHT = 145.0;
@@ -23,33 +21,34 @@ class _CastsPageViewState extends State<CastsPageView> {
   composeCasts() {
     List<Widget> _rowChildren = [];
     widget.casts.asMap().forEach((index, cast) {
-      _rowChildren.add(
-        GestureDetector(
-          onTap: () => Navigator.push(
-              context,
-              CupertinoPageRoute(
-                  builder: (_) => CastDetail(personID: cast.id))),
-          child: Card(
-            elevation: 5,
-            clipBehavior: Clip.antiAlias,
-            shape: CircleBorder(
-                side: BorderSide(color: Colors.grey.shade200, width: 5)),
-            child: cast.profilePath != null
-                ? Image(
-                    width: 120.0,
-                    image: NetworkImage(
-                        'https://image.tmdb.org/t/p/w276_and_h350_face/${cast.profilePath}'),
-                    fit: BoxFit.cover,
-                  )
-                : Image(
-                    width: 120.0,
-                    image: NetworkImage(
-                        'https://i.picsum.photos/id/327/200/300.jpg'),
-                    fit: BoxFit.cover,
-                  ),
+      if (cast.profilePath != null)
+        _rowChildren.add(
+          GestureDetector(
+            onTap: () => Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (_) => CastDetail(personID: cast.id))),
+            child: Card(
+              elevation: 5,
+              clipBehavior: Clip.antiAlias,
+              shape: CircleBorder(
+                  side: BorderSide(color: Colors.grey.shade200, width: 5)),
+              child: cast.profilePath != null
+                  ? Image(
+                      width: 120.0,
+                      image: NetworkImage(
+                          'https://image.tmdb.org/t/p/w276_and_h350_face/${cast.profilePath}'),
+                      fit: BoxFit.cover,
+                    )
+                  : Image(
+                      width: 120.0,
+                      image: NetworkImage(
+                          'https://i.picsum.photos/id/327/200/300.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+            ),
           ),
-        ),
-      );
+        );
 
       if (_rowChildren.length == 2) {
         ccasts.add(Row(
@@ -58,10 +57,6 @@ class _CastsPageViewState extends State<CastsPageView> {
             children: _rowChildren));
         _rowChildren = [];
       }
-      // if (_composedRow.length != 0) {
-      //   ccasts.add(_composedRow[0]);
-      //   _composedRow = [];
-      // }
     });
     setState(() {
       ccasts = ccasts;
