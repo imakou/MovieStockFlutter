@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/model/movie.dart';
 import 'package:flutter_app/screens/home_screen.dart';
 
 void main() => runApp(MyApp());

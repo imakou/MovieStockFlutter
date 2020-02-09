@@ -34,56 +34,16 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Container(
         color: Colors.grey[800],
         child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              MoviesCarousel(_nowPlayingMovies),
-              PopularMoviesCarousel(_popularMovies),
-            ],
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                MoviesCarousel(_nowPlayingMovies),
+                PopularMoviesCarousel(_popularMovies),
+              ],
+            ),
           ),
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   backgroundColor: Colors.grey[700],
-      //   selectedItemColor: Colors.white,
-      //   selectedFontSize: 12,
-      //   type: BottomNavigationBarType.fixed,
-      //   items: [
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.movie,
-      //         ),
-      //         title: Text(
-      //           'Home',
-      //         )),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.subject,
-      //         ),
-      //         title: Text(
-      //           'Explore',
-      //         )),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.search,
-      //         ),
-      //         title: Text(
-      //           'Search',
-      //         )),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.account_box,
-      //         ),
-      //         title: Text(
-      //           'Account',
-      //         )),
-      //   ],
-      //   currentIndex: _currentIndex,
-      //   onTap: (int index) {
-      //     // setState(() {
-      //     //   _currentIndex = index;
-      //     // });
-      //   },
-      // )
     );
   }
 }

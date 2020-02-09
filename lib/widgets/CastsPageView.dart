@@ -25,14 +25,11 @@ class _CastsPageViewState extends State<CastsPageView> {
         _rowChildren.add(
           GestureDetector(
             onTap: () => Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder: (_) => CastDetail(personID: cast.id))),
+                context, CupertinoPageRoute(builder: (_) => CastDetail(personID: cast.id))),
             child: Card(
               elevation: 5,
               clipBehavior: Clip.antiAlias,
-              shape: CircleBorder(
-                  side: BorderSide(color: Colors.grey.shade200, width: 5)),
+              shape: CircleBorder(side: BorderSide(color: Colors.grey.shade200, width: 5)),
               child: cast.profilePath != null
                   ? Image(
                       width: 120.0,
@@ -42,8 +39,7 @@ class _CastsPageViewState extends State<CastsPageView> {
                     )
                   : Image(
                       width: 120.0,
-                      image: NetworkImage(
-                          'https://i.picsum.photos/id/327/200/300.jpg'),
+                      image: NetworkImage('https://i.picsum.photos/id/327/200/300.jpg'),
                       fit: BoxFit.cover,
                     ),
             ),
@@ -65,8 +61,7 @@ class _CastsPageViewState extends State<CastsPageView> {
 
   @override
   void initState() {
-    pageController = PageController(
-        initialPage: currentPage, viewportFraction: viewPortFraction);
+    pageController = PageController(initialPage: currentPage, viewportFraction: viewPortFraction);
     composeCasts();
     super.initState();
   }

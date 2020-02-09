@@ -24,66 +24,60 @@ class _PopularMoviesCarouselState extends State<PopularMoviesCarousel> {
 
   @override
   void initState() {
-    pageController = PageController(
-        initialPage: currentPage, viewportFraction: viewPortFraction);
+    pageController = PageController(initialPage: currentPage, viewportFraction: viewPortFraction);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SizedBox(
-          height: 5,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'Popular Movies',
-            style: TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Popular Movies',
+              style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.white),
+            ),
           ),
-        ),
-        Container(
-          height: 355,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: new PageView.builder(
-                  onPageChanged: (pos) {
-                    setState(() {
-                      currentPage = pos;
-                    });
-                  },
-                  physics: BouncingScrollPhysics(),
-                  controller: pageController,
-                  itemCount: widget._movies.length,
-                  itemBuilder: (context, index) {
-                    Movie movie = widget._movies[index];
-                    final scale = max(SCALE_FRACTION,
-                        (FULL_SCALE - (index - page).abs()) + viewPortFraction);
-                    return posterOffer(movie, scale);
-                  },
+          Container(
+            height: 355,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: new PageView.builder(
+                    onPageChanged: (pos) {
+                      setState(() {
+                        currentPage = pos;
+                      });
+                    },
+                    physics: BouncingScrollPhysics(),
+                    controller: pageController,
+                    itemCount: widget._movies.length,
+                    itemBuilder: (context, index) {
+                      Movie movie = widget._movies[index];
+                      final scale = max(
+                          SCALE_FRACTION, (FULL_SCALE - (index - page).abs()) + viewPortFraction);
+                      return posterOffer(movie, scale);
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget posterOffer(Movie movie, double scale) {
     return GestureDetector(
         onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => MovieDetailScreen(movieID: movie.id))),
+            context, MaterialPageRoute(builder: (_) => MovieDetailScreen(movieID: movie.id))),
         child: Padding(
           padding: const EdgeInsets.all(5),
           child: Align(
@@ -106,13 +100,11 @@ class _PopularMoviesCarouselState extends State<PopularMoviesCarousel> {
                               image: NetworkImage(
                                   'https://image.tmdb.org/t/p/w500_and_h282_face/${movie.posterPath}'),
                               fit: BoxFit.cover,
-                              colorFilter: ColorFilter.mode(
-                                  Colors.black.withOpacity(0),
-                                  BlendMode.darken),
+                              colorFilter:
+                                  ColorFilter.mode(Colors.black.withOpacity(0), BlendMode.darken),
                             ),
                             borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(15.0),
-                                topRight: Radius.circular(15.0)),
+                                topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
                           ),
                         ),
                         Container(
@@ -132,8 +124,7 @@ class _PopularMoviesCarouselState extends State<PopularMoviesCarousel> {
                                 Text(
                                   "${DateFormat('yyyy').format(movie.releaseDate)}",
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontSize: 14.0, color: Colors.grey[300]),
+                                  style: TextStyle(fontSize: 14.0, color: Colors.grey[300]),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(top: 8.0),

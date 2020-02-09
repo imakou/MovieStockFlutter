@@ -24,12 +24,10 @@ class _CastInfoState extends State<CastInfo> {
                       image: NetworkImage(
                           'https://image.tmdb.org/t/p/w600_and_h900_bestv2/${widget.person.profilePath}'),
                       fit: BoxFit.cover,
-                      colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0), BlendMode.darken),
+                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(0), BlendMode.darken),
                     ),
                     borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(35.0),
-                        bottomRight: Radius.circular(35.0)),
+                        bottomLeft: Radius.circular(35.0), bottomRight: Radius.circular(35.0)),
                   ),
                 ),
                 Column(
@@ -42,26 +40,20 @@ class _CastInfoState extends State<CastInfo> {
                       children: <Widget>[
                         informationColumn("Name", widget.person.name),
                         informationColumn(
-                            "Birthday",
-                            DateFormat('yyyy-MM-dd')
-                                .format(widget.person.birthday)),
+                            "Birthday", DateFormat('yyyy-MM-dd').format(widget.person.birthday)),
                         Container(
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(15.0, 10, 15, 15),
+                            padding: const EdgeInsets.fromLTRB(15.0, 10, 15, 15),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text("Biography",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                                Text("Biography", style: TextStyle(fontWeight: FontWeight.bold)),
                                 SizedBox(
                                   height: 5,
                                 ),
                                 Text(widget.person.biography,
-                                    style: TextStyle(
-                                        letterSpacing: 0.5, wordSpacing: 2)),
+                                    style: TextStyle(letterSpacing: 0.5, wordSpacing: 2)),
                               ],
                             ),
                           ),
@@ -91,6 +83,22 @@ class _CastInfoState extends State<CastInfo> {
                     icon: Icon(Icons.arrow_back),
                     color: Colors.white,
                     onPressed: () => Navigator.pop(context),
+                  ),
+                ),
+              ),
+              Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(40.0),
+                ),
+                child: Center(
+                  child: IconButton(
+                    icon: Icon(Icons.home),
+                    color: Colors.white,
+                    onPressed: () => Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false),
                   ),
                 ),
               ),

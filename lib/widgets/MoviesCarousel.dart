@@ -25,67 +25,57 @@ class _MoviesCarouselState extends State<MoviesCarousel> {
 
   @override
   void initState() {
-    pageController = PageController(
-        initialPage: currentPage, viewportFraction: viewPortFraction);
+    pageController = PageController(initialPage: currentPage, viewportFraction: viewPortFraction);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Now Playing',
-              style: TextStyle(
-                  fontSize: 22.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'Now Playing',
+            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.white),
           ),
-          Container(
-            height: 430,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: new PageView.builder(
-                    onPageChanged: (pos) {
-                      setState(() {
-                        currentPage = pos;
-                      });
-                    },
-                    physics: BouncingScrollPhysics(),
-                    controller: pageController,
-                    itemCount: widget._movies.length,
-                    itemBuilder: (context, index) {
-                      Movie movie = widget._movies[index];
-                      final scale = max(
-                          SCALE_FRACTION,
-                          (FULL_SCALE - (index - page).abs()) +
-                              viewPortFraction);
-                      return posterOffer(movie, scale);
-                    },
-                  ),
+        ),
+        Container(
+          height: 430,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: new PageView.builder(
+                  onPageChanged: (pos) {
+                    setState(() {
+                      currentPage = pos;
+                    });
+                  },
+                  physics: BouncingScrollPhysics(),
+                  controller: pageController,
+                  itemCount: widget._movies.length,
+                  itemBuilder: (context, index) {
+                    Movie movie = widget._movies[index];
+                    final scale =
+                        max(SCALE_FRACTION, (FULL_SCALE - (index - page).abs()) + viewPortFraction);
+                    return posterOffer(movie, scale);
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget posterOffer(Movie movie, double scale) {
     return GestureDetector(
         onTap: () => Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (_) => MovieDetailScreen(movieID: movie.id))),
+            context, CupertinoPageRoute(builder: (_) => MovieDetailScreen(movieID: movie.id))),
         child: Stack(
           children: <Widget>[
             ShaderMask(
@@ -138,10 +128,7 @@ class _MoviesCarouselState extends State<MoviesCarousel> {
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
                         "Released: ${DateFormat('yyyy-MM-dd').format(movie.releaseDate)} ",
-                        style: TextStyle(
-                            fontSize: 14.0,
-                            letterSpacing: 1,
-                            color: Colors.grey),
+                        style: TextStyle(fontSize: 14.0, letterSpacing: 1, color: Colors.grey),
                       ),
                     ),
                   ],

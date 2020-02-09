@@ -20,10 +20,7 @@ class _CastDetailState extends State<CastDetail> {
     // TODO: implement initState
     fetchPerson(widget.personID).then((person) => {
           setState(() => {_person = person}),
-          _castScreens = [
-            CastInfo(person: person),
-            CastMedia(castMedia: person.poster)
-          ],
+          _castScreens = [CastInfo(person: person), CastMedia(castMedia: person.poster)],
         });
     super.initState();
   }
@@ -45,13 +42,6 @@ class _CastDetailState extends State<CastDetail> {
                 Icons.perm_contact_calendar,
               ),
               title: Text(
-                'Home',
-              )),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.perm_contact_calendar,
-              ),
-              title: Text(
                 'Biography',
               )),
           BottomNavigationBarItem(
@@ -62,16 +52,11 @@ class _CastDetailState extends State<CastDetail> {
                 'Works',
               )),
         ],
-        currentIndex: _currentIndex + 1,
+        currentIndex: _currentIndex,
         onTap: (int index) {
-          if (index == 0) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/home', (Route<dynamic> route) => false);
-          } else {
-            setState(() {
-              _currentIndex = index - 1;
-            });
-          }
+          setState(() {
+            _currentIndex = index;
+          });
         },
       ),
     );

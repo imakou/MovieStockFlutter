@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/model/cast.dart';
 import 'package:flutter_app/model/movie.dart';
 import 'package:flutter_app/widgets/CastsPageView.dart';
 import 'package:intl/intl.dart';
@@ -20,15 +19,14 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   String _errorMessage;
   @override
   void initState() {
-    // TODO: implement initState
     fetchMovie(widget.movieID).then((movie) {
       setState(() {
         _movie = movie;
       });
     }).catchError((e) {
-      print('catchError $e');
       setState(() => {_errorMessage = e.toString()});
     });
+    super.initState();
   }
 
   String durationToString(int minutes) {
@@ -54,18 +52,17 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           height: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: NetworkImage(
-                                    'https://image.tmdb.org/t/p/w1280/${_movie.backdropPath}'),
-                                fit: BoxFit.cover,
-                                colorFilter: ColorFilter.mode(
-                                    Colors.black.withOpacity(0.2),
-                                    BlendMode.darken)),
+                              image: NetworkImage(
+                                  'https://image.tmdb.org/t/p/w1280/${_movie.backdropPath}'),
+                              fit: BoxFit.cover,
+                              colorFilter:
+                                  ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                            ),
                           ),
                         )
-                      : Text("N/a"),
+                      : Text("N/A"),
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 35.0),
+                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 35.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -84,6 +81,22 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                             ),
                           ),
                         ),
+                        Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.black26,
+                            borderRadius: BorderRadius.circular(40.0),
+                          ),
+                          child: Center(
+                            child: IconButton(
+                              icon: Icon(Icons.home),
+                              color: Colors.white,
+                              onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/home', (Route<dynamic> route) => false),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -98,8 +111,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(35.0),
-                                topRight: Radius.circular(35.0)),
+                                topLeft: Radius.circular(35.0), topRight: Radius.circular(35.0)),
                           ),
                           child: Padding(
                             padding: EdgeInsets.all(10.0),
@@ -110,8 +122,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                   Container(
                                       margin: EdgeInsets.only(top: 20.0),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
                                             _movie.title,
@@ -122,8 +133,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                             ),
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 5.0, bottom: 10, top: 10),
+                                            padding:
+                                                EdgeInsets.only(left: 5.0, bottom: 10, top: 10),
                                             child: Text(
                                               '${DateFormat('yyyy').format(_movie.releaseDate)} | ${durationToString(_movie.runtime)} | ${_movie.languages[0].name}',
                                               style: TextStyle(
@@ -136,37 +147,26 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                               alignment: WrapAlignment.start,
                                               children: _movie.genreIds
                                                   .map((genre) => Container(
-                                                        margin: EdgeInsets.only(
-                                                            right: 10,
-                                                            bottom: 10),
-                                                        decoration:
-                                                            BoxDecoration(
+                                                        margin:
+                                                            EdgeInsets.only(right: 10, bottom: 10),
+                                                        decoration: BoxDecoration(
                                                           color: Colors.yellow,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      20.0),
+                                                          borderRadius: BorderRadius.circular(20.0),
                                                         ),
                                                         child: Padding(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical: 5,
-                                                                  horizontal:
-                                                                      8),
-                                                          child:
-                                                              Text(genre.name),
+                                                          padding: EdgeInsets.symmetric(
+                                                              vertical: 5, horizontal: 8),
+                                                          child: Text(genre.name),
                                                         ),
                                                       ))
                                                   .toList()),
                                         ],
                                       )),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 10),
+                                        padding: EdgeInsets.symmetric(vertical: 10),
                                         child: Text(
                                           "Synopsis",
                                           style: TextStyle(
@@ -185,8 +185,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                         height: 25,
                                       ),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Text(
                                             "Casts",
@@ -198,16 +197,13 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsets.only(right: 10.0),
+                                            padding: EdgeInsets.only(right: 10.0),
                                             child: GestureDetector(
                                               onTap: () => Navigator.push(
                                                   context,
                                                   CupertinoPageRoute(
                                                       builder: (_) =>
-                                                          CastScreen(
-                                                              casts: _movie
-                                                                  .casts))),
+                                                          CastScreen(casts: _movie.casts))),
                                               child: Text(
                                                 "See All",
                                                 style: TextStyle(
@@ -278,8 +274,6 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
         child: Text(_errorMessage),
       );
     } else {
-      print('_errorMessage $_errorMessage');
-
       return Center(
         child: CircularProgressIndicator(),
       );
