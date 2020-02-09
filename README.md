@@ -1,16 +1,17 @@
-# flutter_app
+# Movie mobile app developed by Flutter
 
-A new Flutter project.
+### Features
 
-## Getting Started
+- Now Playing movies
+- Popular movies
+- See all cast
+- See indivual cast and their other works
 
-This project is a starting point for a Flutter application.
+## Demo
 
-A few resources to get you started if this is your first Flutter project:
+![Kapture 2020-02-09 at 1 35 18](https://user-images.githubusercontent.com/1507950/74097637-7d14d800-4adc-11ea-9436-ccab56f208b6.gif)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Reference
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Movie's information API - [Themoviedb](https://developers.themoviedb.org/)
+- UI inspiration - [Movie Interface](https://dribbble.com/shots/8287917-Movie-Interface)
