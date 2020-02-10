@@ -13,5 +13,5 @@
 
 ## Reference
 
-- Movie's information API - [Themoviedb](https://developers.themoviedb.org/)
+- Movie information API - [Themoviedb](https://developers.themoviedb.org/)
 - UI inspiration - [Movie Interface](https://dribbble.com/shots/8287917-Movie-Interface)
